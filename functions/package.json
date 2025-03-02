@@ -1,0 +1,14 @@
+{
+  "checklists": {
+    "ABC1234": {
+      "motorista": "João Silva",
+      "status": "pendente",
+      "itens": {
+        "Freios": true,
+        "Faróis": true,
+        "Pneus": false
+      },
+      "dataHora": "2025-03-01T14:30:00Z"
+    }
+  }
+}

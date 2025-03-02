@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Checklist - SafeTruck</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+<body>
+  <h1>Preencher Checklist</h1>
+  <form id="formChecklist">
+    <label for="placa">Placa do Caminhão:</label>
+    <input type="text" id="placa" required><br>
+
+    <label for="motorista">Nome do Motorista:</label>
+    <input type="text" id="motorista" readonly required><br> <!-- Campo readonly -->
+
+    <!-- Itens do checklist -->
+    <label>Freios:</label><br>
+    <label><input type="radio" name="freios" value="OK" required> OK</label>
+    <label><input type="radio" name="freios" value="N/OK" required> N/OK</label><br>
+
+    <label>Faróis:</label><br>
+    <label><input type="radio" name="farois" value="OK" required> OK</label>
+    <label><input type="radio" name="farois" value="N/OK" required> N/OK</label><br>
+
+    <label>Pneus:</label><br>
+    <label><input type="radio" name="pneus" value="OK" required> OK</label>
+    <label><input type="radio" name="pneus" value="N/OK" required> N/OK</label><br>
+
+    <p id="erroChecklist" style="color: red; display: none;">Todos os itens devem ser respondidos!</p>
+
+    <button type="submit">Salvar Checklist</button>
+  </form>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="module" src="../../src/checklist.js"></script>
+</body>
+</html> 
