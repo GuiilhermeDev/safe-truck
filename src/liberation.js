@@ -1,5 +1,41 @@
 import { database } from './firebaseConfig.js';
-import { ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+import { ref, onValue, update, get } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+// Função para codificar e-mails
+function codificarEmail(email) {
+  return email.replace(/[.#$\[\]%@]/g, '_');
+}
+
+// Recupera o e-mail do usuário logado (armazenado no localStorage)
+const emailUsuario = localStorage.getItem("emailUsuario");
+
+if (!emailUsuario) {
+  // Redireciona para a tela de login se o usuário não estiver logado
+  window.location.href = "index.html";
+} else {
+  // Verifica se o usuário é admin
+  const emailCodificado = codificarEmail(emailUsuario);
+  const usuariosRef = ref(database, `usuarios/${emailCodificado}`);
+
+  get(usuariosRef).then((snapshot) => {
+    if (snapshot.exists()) {
+      const usuario = snapshot.val();
+      if (usuario.perfil !== "admin") {
+        // Redireciona para a home se o usuário não for admin
+        window.location.href = "home.html";
+      } else {
+        // Carrega os checklists pendentes se o usuário for admin
+        carregarChecklists();
+      }
+    } else {
+      // Redireciona para a home se o usuário não existir
+      window.location.href = "home.html";
+    }
+  }).catch((error) => {
+    console.error("Erro ao buscar dados do usuário:", error);
+    window.location.href = "home.html";
+  });
+}
 
 // Função para carregar checklists pendentes
 function carregarChecklists() {
@@ -66,6 +102,3 @@ window.liberarCaminhao = function (placa) {
     }
   });
 };
-
-// Carrega os checklists ao abrir a página
-carregarChecklists();

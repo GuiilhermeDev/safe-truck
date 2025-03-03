@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Análise de Checklists - SafeTruck</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <!-- Adicionar biblioteca de gráficos (ex.: Chart.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      padding: 20px;
+    }
+    .card {
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    canvas {
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Análise de Checklists</h1>
+  <div class="dashboard">
+    <!-- Card para Checklists Pendentes -->
+    <div class="card">
+      <h2>Checklists Pendentes</h2>
+      <ul id="checklistsPendentes"></ul>
+    </div>
+
+    <!-- Card para Checklists Liberados -->
+    <div class="card">
+      <h2>Checklists Liberados</h2>
+      <ul id="checklistsLiberados"></ul>
+    </div>
+
+    <!-- Card para Status dos Itens -->
+    <div class="card">
+      <h2>Status dos Itens</h2>
+      <canvas id="graficoItens"></canvas>
+    </div>
+
+    <!-- Card para Métricas Gerais -->
+    <div class="card">
+      <h2>Métricas Gerais</h2>
+      <canvas id="graficoMetricas"></canvas>
+    </div>
+  </div>
+
+  <!-- Botão de Voltar -->
+  <button id="btnVoltar" style="position: fixed; bottom: 20px; right: 20px; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+    Voltar
+  </button>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="module" src="../../src/analise.js"></script>
+</body>
+</html>

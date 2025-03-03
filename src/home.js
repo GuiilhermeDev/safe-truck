@@ -21,8 +21,12 @@ if (!emailUsuario) {
     if (snapshot.exists()) {
       const usuario = snapshot.val();
       if (usuario.perfil === "admin") {
-        // Exibe o link de cadastro se o usuário for admin
         document.getElementById("linkCadastro").style.display = "block";
+        document.getElementById("linkLiberacao").style.display = "block";
+        document.getElementById("linkAnalise").style.display = "block"; 
+      } else {
+        // Oculta o link de liberação para usuários comuns
+        document.getElementById("linkLiberacao").style.display = "none";
       }
     }
   }).catch((error) => {
