@@ -66,3 +66,8 @@ document.getElementById("formCadastro").addEventListener("submit", async (e) => 
 
   await cadastrarUsuario(email, nome, senha, perfil);
 });
+
+// Botão de Voltar
+document.getElementById("btnVoltar").addEventListener("click", () => {
+  window.location.href = "home.html";
+});

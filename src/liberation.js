@@ -62,42 +62,49 @@ function carregarChecklists() {
   });
 }
 
-// Função para liberar o caminhão
 window.liberarCaminhao = function (placa) {
-  Swal.fire({
-    title: 'Liberar Caminhão?',
-    text: "Tem certeza que deseja liberar este caminhão?",
-    icon: 'question',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Sim, liberar!'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      const checklistRef = ref(database, `checklists/${placa}`);
-      update(checklistRef, {
-        status: "liberado",
-        dataHoraLiberacao: new Date().toISOString() // Armazena a data da liberação
-      }).then(() => {
-        // Remove o item da lista
-        const item = document.getElementById(`checklist-${placa}`);
-        if (item) {
-          item.remove();
+  const checklistRef = ref(database, `checklists/${placa}`);
+
+  get(checklistRef).then((snapshot) => {
+    if (snapshot.exists() && snapshot.val().status === "pendente") {
+      Swal.fire({
+        title: 'Liberar Caminhão?',
+        text: `Tem certeza que deseja liberar o caminhão de placa ${placa}?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim, liberar!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          update(checklistRef, {
+            status: "liberado",
+            dataHoraLiberacao: new Date().toISOString()
+          }).then(() => {
+            const item = document.getElementById(`checklist-${placa}`);
+            if (item) {
+              item.remove();
+            }
+            Swal.fire({
+              icon: 'success',
+              title: 'Caminhão liberado!',
+              text: `O caminhão de placa ${placa} foi liberado com sucesso.`,
+            });
+          }).catch((error) => {
+            console.error("Erro ao liberar caminhão:", error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Erro',
+              text: 'Ocorreu um erro ao liberar o caminhão.',
+            });
+          });
         }
-        // Notificação de sucesso
-        Swal.fire({
-          icon: 'success',
-          title: 'Caminhão liberado!',
-          text: 'O caminhão foi liberado com sucesso.',
-        });
-      }).catch((error) => {
-        console.error("Erro ao liberar caminhão:", error);
-        // Notificação de erro
-        Swal.fire({
-          icon: 'error',
-          title: 'Erro',
-          text: 'Ocorreu um erro ao liberar o caminhão.',
-        });
+      });
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erro',
+        text: 'Este caminhão já foi liberado ou não possui um checklist pendente.',
       });
     }
   });

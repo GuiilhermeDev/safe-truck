@@ -24,8 +24,8 @@ if (!emailUsuario) {
         document.getElementById("linkCadastro").style.display = "block";
         document.getElementById("linkLiberacao").style.display = "block";
         document.getElementById("linkAnalise").style.display = "block"; 
+        document.getElementById("linkRetorno").style.display = "block"; 
       } else {
-        // Oculta o link de liberação para usuários comuns
         document.getElementById("linkLiberacao").style.display = "none";
       }
     }
@@ -40,10 +40,12 @@ function fazerLogout() {
   window.location.href = "index.html";
 }
 
-// Adiciona um botão de logout (opcional)
+// Adiciona um botão de logout
 document.addEventListener("DOMContentLoaded", () => {
   const botaoLogout = document.createElement("button");
   botaoLogout.textContent = "Logout";
+  // Adiciona a classe CSS ao botão
+  botaoLogout.classList.add("btn-logout");
   botaoLogout.addEventListener("click", fazerLogout);
   document.body.appendChild(botaoLogout);
 });
