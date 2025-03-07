@@ -1,6 +1,51 @@
 import { database } from './firebaseConfig.js';
-import { ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+import { ref, get } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
+// Função para codificar e-mails
+function codificarEmail(email) {
+  return email.replace(/[.#$\[\]%@]/g, '_');
+}
+
+// Função para verificar se o usuário é admin
+async function verificarAdmin() {
+  const emailUsuario = localStorage.getItem("emailUsuario");
+
+  if (!emailUsuario) {
+    // Redireciona para a tela de login se o usuário não estiver logado
+    window.location.href = "../public/index.html";
+    return false;
+  }
+
+  const emailCodificado = codificarEmail(emailUsuario);
+  const usuariosRef = ref(database, `usuarios/${emailCodificado}`);
+
+  try {
+    const snapshot = await get(usuariosRef);
+    if (snapshot.exists()) {
+      const usuario = snapshot.val();
+      if (usuario.perfil === "admin") {
+        return true; // Usuário é admin, permite o acesso
+      }
+    }
+    // Redireciona para a home se o usuário não for admin ou não existir
+    window.location.href = "../public/home.html";
+    return false;
+  } catch (error) {
+    console.error("Erro ao verificar permissão de admin:", error);
+    window.location.href = "../public/home.html";
+    return false;
+  }
+}
+
+// Verifica o acesso ao carregar a página
+verificarAdmin().then((isAdmin) => {
+  if (isAdmin) {
+    console.log("Acesso permitido: usuário é admin.");
+    // Aqui você pode chamar as funções específicas da página
+  } else {
+    console.log("Acesso negado: usuário não é admin.");
+  }
+});
 // Função para carregar caminhões liberados
 function carregarCaminhoesLiberados() {
   const checklistsRef = ref(database, 'checklists');
